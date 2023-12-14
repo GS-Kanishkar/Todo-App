@@ -1,23 +1,73 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import Content from './Content';
+import Footer from './Footer';
+import Header from './Header';
+import Additem from './Additem';
+import Search from './Search';
+
+
+
 
 function App() {
+
+  const [item , setItem] = useState(JSON.parse(localStorage.getItem('todo_list')));
+
+  const [newItem , setNewItem] = useState('')
+  const [searching, setSearching] = useState()
+
+
+  const handleCheck =(id)=>{
+  const arrays=item.map((n)=> (
+  id===n.id? {...n, checked: !n.checked } :n
+  ))
+  return setItem(arrays)
+
+}
+const handleDelete =(id)=>{
+  const arrays2=item.filter((n)=>(
+    id!==n.id
+  ))
+  setItem(arrays2)
+  localStorage.setItem("todo_list",JSON.stringify(arrays2))
+
+}
+
+const handleSubmit =(e) =>{
+
+  e.preventDefault()
+  console.log(newItem)
+  addNewItems(newItem)
+  setNewItem('')
+}
+
+const addNewItems = (a)=>{
+  const id = item.length ? item[item.length -1].id +1 : 1;
+  const newArray ={id ,checked :false ,name : a}
+  const listItems=[...item, newArray]
+      setItem(listItems)
+      localStorage.setItem("todo_list",JSON.stringify(listItems))
+}
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      
+     
+      <Header title= "To do app" />
+      <Additem 
+      newItem = {newItem}
+      setNewItem = {setNewItem}
+      handleSubmit = {handleSubmit} />
+      <Search 
+      searching={searching}
+      setSearching={setSearching}
+      />
+      <Content item = {searching ?  item.filter(a=>(a.name).toLowerCase().includes(searching.toLowerCase())) : item}
+       setItems={setItem}
+      handleCheck={handleCheck}
+      handleDelete={handleDelete}
+        />
+     <Footer 
+      item={item}
+      /> 
     </div>
   );
 }
