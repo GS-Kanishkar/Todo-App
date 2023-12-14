@@ -8,7 +8,7 @@ const Content = ({item,setItem,handleCheck,handleDelete}) => {
 
   return (
     <div className='contentClass'>
-      {(item.length)?(
+      {item && item.length ?(
         <ul>
         <Content2 item={item}
         setItem={setItem}
