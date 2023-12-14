@@ -40,13 +40,19 @@ const handleSubmit =(e) =>{
   setNewItem('')
 }
 
-const addNewItems = (a)=>{
-  const id = item.length ? item[item.length -1].id +1 : 1;
-  const newArray ={id ,checked :false ,name : a}
-  const listItems=[...item, newArray]
-      setItem(listItems)
-      localStorage.setItem("todo_list",JSON.stringify(listItems))
-}
+const addNewItems = (a) => {
+  const newItem = {
+    id: (item && item.length) ? item[item.length - 1].id + 1 : 1,
+    checked: false,
+    name: a,
+  };
+
+  const updatedItems = item ? [...item, newItem] : [newItem];
+
+  setItem(updatedItems);
+  localStorage.setItem("todo_list", JSON.stringify(updatedItems));
+};
+
   return (
     <div className='App'>
       
